@@ -12,24 +12,13 @@ const InvoicePreview = ({ invoice }: InvoicePreviewProps) => {
       <CardContent className="p-8" id="invoice-preview">
         {/* Header */}
         <div className="flex justify-between items-start mb-8">
-          <div className="flex items-center space-x-6">
-            {invoice.companyLogo && (
-              <div className="flex-shrink-0">
-                <img
-                  src={invoice.companyLogo}
-                  alt="Company logo"
-                  className="w-20 h-20 object-contain"
-                />
-              </div>
-            )}
-            <div>
-              <h1 className="text-3xl font-bold text-foreground mb-2">INVOICE</h1>
-              <div className="text-sm text-muted-foreground space-y-1">
-                <p><span className="font-semibold">Invoice #:</span> {invoice.invoiceNumber}</p>
-                <p><span className="font-semibold">Date:</span> {new Date(invoice.date).toLocaleDateString()}</p>
-                <p><span className="font-semibold">Due Date:</span> {new Date(invoice.dueDate).toLocaleDateString()}</p>
-                <p><span className="font-semibold">Payment Terms:</span> {invoice.paymentTerms}</p>
-              </div>
+          <div>
+            <h1 className="text-3xl font-bold text-foreground mb-2">INVOICE</h1>
+            <div className="text-sm text-muted-foreground space-y-1">
+              <p><span className="font-semibold">Invoice #:</span> {invoice.invoiceNumber}</p>
+              <p><span className="font-semibold">Date:</span> {new Date(invoice.date).toLocaleDateString()}</p>
+              <p><span className="font-semibold">Due Date:</span> {new Date(invoice.dueDate).toLocaleDateString()}</p>
+              <p><span className="font-semibold">Payment Terms:</span> {invoice.paymentTerms}</p>
             </div>
           </div>
           

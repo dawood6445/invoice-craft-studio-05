@@ -1,6 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { FileText, History, Calculator, Settings } from "lucide-react";
+import { FileText, History, Calculator } from "lucide-react";
 
 const Header = () => {
   const location = useLocation();
@@ -34,16 +34,6 @@ const Header = () => {
               <Link to="/history" className="flex items-center space-x-2">
                 <History className="w-4 h-4" />
                 <span>History</span>
-              </Link>
-            </Button>
-
-            <Button
-              variant={location.pathname === "/email-setup" ? "default" : "ghost"}
-              asChild
-            >
-              <Link to="/email-setup" className="flex items-center space-x-2">
-                <Settings className="w-4 h-4" />
-                <span>Email Setup</span>
               </Link>
             </Button>
           </nav>

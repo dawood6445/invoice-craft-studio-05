@@ -10,7 +10,6 @@ import { InvoiceData, InvoiceItem } from "@/types/invoice";
 import { v4 as uuidv4 } from "uuid";
 import InvoicePreview from "./InvoicePreview";
 import EmailDialog from "./EmailDialog";
-import LogoUpload from "./LogoUpload";
 import { generatePDF } from "@/utils/pdfGenerator";
 import { saveInvoice } from "@/utils/localStorage";
 import { useToast } from "@/hooks/use-toast";
@@ -226,12 +225,7 @@ const InvoiceForm = ({ initialInvoice }: InvoiceFormProps) => {
               <CardHeader>
                 <CardTitle>Company Information</CardTitle>
               </CardHeader>
-              <CardContent className="space-y-4">
-                <LogoUpload 
-                  logoUrl={invoice.companyLogo}
-                  onLogoChange={(logoUrl) => updateInvoice('companyLogo', logoUrl)}
-                />
-                
+              <CardContent>
                 <div>
                   <Label htmlFor="companyName">Company Name</Label>
                   <Input

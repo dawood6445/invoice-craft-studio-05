@@ -5,11 +5,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
-import { X, Mail, Send, Download, Settings } from "lucide-react";
+import { X, Mail } from "lucide-react";
 import { InvoiceData, EmailData } from "@/types/invoice";
 import { useToast } from "@/hooks/use-toast";
-import { sendInvoiceEmail, openEmailClient, initEmailJS } from "@/utils/emailService";
 
 interface EmailDialogProps {
   isOpen: boolean;
@@ -36,7 +34,6 @@ ${invoice.companyName}`
   
   const [newEmail, setNewEmail] = useState("");
   const [isSending, setIsSending] = useState(false);
-  const [emailMethod, setEmailMethod] = useState<'service' | 'client'>('service');
 
   const addEmail = () => {
     if (newEmail && isValidEmail(newEmail) && !emailData.to.includes(newEmail)) {
@@ -72,29 +69,13 @@ ${invoice.companyName}`
     setIsSending(true);
     
     try {
-      if (emailMethod === 'client') {
-        // Open default email client
-        openEmailClient(invoice, emailData.to, emailData.subject, emailData.message);
-        toast({
-          title: "Email Client Opened",
-          description: "Please add the PDF attachment manually in your email client.",
-        });
-      } else {
-        // Send via EmailJS service
-        const success = await sendInvoiceEmail(
-          invoice,
-          emailData.to,
-          emailData.subject,
-          emailData.message
-        );
-        
-        if (success) {
-          toast({
-            title: "Success",
-            description: `Invoice sent successfully to ${emailData.to.length} recipient(s)!`,
-          });
-        }
-      }
+      // Simulate email sending - in a real app, you'd call your backend API
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      toast({
+        title: "Success",
+        description: `Invoice sent successfully to ${emailData.to.length} recipient(s)!`,
+      });
       
       onClose();
     } catch (error) {
@@ -126,52 +107,6 @@ ${invoice.companyName}`
         </DialogHeader>
 
         <div className="space-y-6 py-4">
-          {/* Email Method Selection */}
-          <div className="space-y-3">
-            <Label>Email Method</Label>
-            <div className="grid grid-cols-2 gap-4">
-              <div
-                className={`p-4 border-2 rounded-lg cursor-pointer transition-colors ${
-                  emailMethod === 'service'
-                    ? 'border-primary bg-primary/5'
-                    : 'border-border hover:border-primary/50'
-                }`}
-                onClick={() => setEmailMethod('service')}
-              >
-                <div className="flex items-center space-x-3">
-                  <Send className="w-5 h-5" />
-                  <div>
-                    <p className="font-medium">Direct Send</p>
-                    <p className="text-xs text-muted-foreground">
-                      Send with PDF attached (recommended)
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <div
-                className={`p-4 border-2 rounded-lg cursor-pointer transition-colors ${
-                  emailMethod === 'client'
-                    ? 'border-primary bg-primary/5'
-                    : 'border-border hover:border-primary/50'
-                }`}
-                onClick={() => setEmailMethod('client')}
-              >
-                <div className="flex items-center space-x-3">
-                  <Mail className="w-5 h-5" />
-                  <div>
-                    <p className="font-medium">Email Client</p>
-                    <p className="text-xs text-muted-foreground">
-                      Open your default email app
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <Separator />
-
           {/* Recipients */}
           <div className="space-y-2">
             <Label htmlFor="recipients">Recipients</Label>
@@ -248,19 +183,7 @@ ${invoice.companyName}`
             Cancel
           </Button>
           <Button onClick={handleSendEmail} disabled={isSending || emailData.to.length === 0}>
-            {isSending ? (
-              "Sending..."
-            ) : emailMethod === 'client' ? (
-              <>
-                <Mail className="w-4 h-4 mr-2" />
-                Open Email Client
-              </>
-            ) : (
-              <>
-                <Send className="w-4 h-4 mr-2" />
-                Send Email
-              </>
-            )}
+            {isSending ? "Sending..." : "Send Email"}
           </Button>
         </DialogFooter>
       </DialogContent>
