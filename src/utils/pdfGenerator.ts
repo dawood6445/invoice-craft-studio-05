@@ -3,6 +3,20 @@ import html2canvas from 'html2canvas';
 import { InvoiceData } from '@/types/invoice';
 
 export const generatePDF = async (invoice: InvoiceData): Promise<void> => {
+  const pdfBlob = await generatePDFBlob(invoice);
+  
+  // Download the PDF
+  const url = URL.createObjectURL(pdfBlob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `invoice-${invoice.invoiceNumber}.pdf`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+};
+
+export const generatePDFBlob = async (invoice: InvoiceData): Promise<Blob> => {
   try {
     const element = document.getElementById('invoice-preview');
     if (!element) {
@@ -41,8 +55,8 @@ export const generatePDF = async (invoice: InvoiceData): Promise<void> => {
       heightLeft -= pageHeight;
     }
 
-    // Download the PDF
-    pdf.save(`invoice-${invoice.invoiceNumber}.pdf`);
+    // Return as blob instead of downloading
+    return pdf.output('blob');
   } catch (error) {
     console.error('Error generating PDF:', error);
     throw error;
